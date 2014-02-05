@@ -224,21 +224,35 @@ locktestthread(void *junk, unsigned long num)
 #endif
 }
 
+//**********************************************I CHANGED THIS***************************************
+/*
+*Comment added by Jaron 2-3-14:
+*I added a kprintf i to check if the test work. If it prints, the locks that you implimented 
+*are successfull
+*/
+
+
 
 int
-locktest(int nargs, char **args)
-{
+locktest(int nargs, char **args){
 	int i, result;
 
 	(void)nargs;
 	(void)args;
 
 	inititems();
-	kprintf("Starting lock test...\n");
+	kprintf("\nStarting lock test...\n");
 
+
+//If lock test is successful the first for loop will print
+		
+
+kprintf("\n");
 	for (i=0; i<NTHREADS; i++) {
-		result = thread_fork("synchtest", NULL, locktestthread,
-				     NULL, i);
+		result = thread_fork("synchtest", NULL, locktestthread, NULL, i);
+
+		kprintf("%d ",i);
+kprintf("\n");
 		if (result) {
 			panic("locktest: thread_fork failed: %s\n",
 			      strerror(result));
@@ -246,15 +260,28 @@ locktest(int nargs, char **args)
 	}
 	for (i=0; i<NTHREADS; i++) {
 		P(donesem);
+	
 	}
 
+
+
+
 #ifdef UW
+
+kprintf("\n");
   cleanitems();
+
 #endif
-	kprintf("Lock test done.\n");
+	kprintf("\nLock test done.\n\n");
 
 	return 0;
 }
+
+//***********************************************END CHANGE*******************************************
+
+
+
+
 
 static
 void

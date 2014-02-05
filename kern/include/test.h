@@ -43,9 +43,28 @@ int whalemating(int, char **);
 int catmouse(int, char **);
 #endif
 
+
 /*
  * Test code.
  */
+
+//**********************************************I CHANGED THIS***************************************
+/*
+*Comment added by Jaron 2-3-14:
+*Edited 2-3-14
+*I added this for ASST1 / Project1
+*/
+
+int mytest(int, char **);
+int mythreadtest(int, char **);
+int mylocktest(int, char **);
+
+
+//***********************************************END CHANGE*******************************************
+
+
+
+
 
 /* lib tests */
 int arraytest(int, char **);

@@ -449,6 +449,16 @@ cmd_opsmenu(int n, char **a)
 	return 0;
 }
 
+
+
+//**********************************************I CHANGED THIS***************************************
+/*
+*Comment added by Jaron 2-3-14:
+*Edited 2-3-14
+*I added this for ASST1 / Project1
+*/
+
+
 static const char *testmenu[] = {
 	"[at]  Array test                    ",
 	"[bt]  Bitmap test                   ",
@@ -468,8 +478,17 @@ static const char *testmenu[] = {
 	"[fs3] FS write stress       (4)     ",
 	"[fs4] FS write stress 2     (4)     ",
 	"[fs5] FS create stress      (4)     ",
+	"[mt]  My Test			  ",
+	"[mtt] My Thread Test		  ",
+	"[mlt] My Lock Test                  ",
+
+
 	NULL
 };
+
+//***********************************************END CHANGE*******************************************
+
+
 
 static
 int
@@ -517,6 +536,17 @@ cmd_mainmenu(int n, char **a)
 //
 // Command table.
 
+
+
+
+//**********************************************I CHANGED THIS***************************************
+/*
+*Comment added by Jaron 2-3-14:
+*Edited 2-3-14
+*I added this for ASST1 / Project1
+*/
+
+
 static struct {
 	const char *name;
 	int (*func)(int nargs, char **args);
@@ -555,10 +585,16 @@ static struct {
 	{ "kh",         cmd_kheapstats },
 
 	/* base system tests */
-	{ "at",		arraytest },
-	{ "bt",		bitmaptest },
+	{ "at",	arraytest },
+	{ "bt",	bitmaptest },
 	{ "km1",	malloctest },
 	{ "km2",	mallocstress },
+
+//ADDED THIS:
+	{ "mt",	mytest },
+	{ "mtt",	mythreadtest },
+	{ "mlt",	mylocktest },
+
 #if OPT_NET
 	{ "net",	nettest },
 #endif
@@ -583,6 +619,12 @@ static struct {
 
 	{ NULL, NULL }
 };
+
+//***********************************************END CHANGE*******************************************
+
+
+
+
 
 /*
  * Process a single command.

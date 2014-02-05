@@ -151,7 +151,14 @@ thread_create(const char *name)
 
 	/* If you add to struct thread, be sure to initialize here */
 
+
+/*
+*Comment added by Jaron 2-3-14:
+*THIS FILE AFFECTS synctest.c. Whatever you print here will make synchtest.c print it.
+*/
+
 	return thread;
+
 }
 
 /*
@@ -762,6 +769,7 @@ thread_startup(void (*entrypoint)(void *data1, unsigned long data2),
 
 	/* Done. */
 	thread_exit();
+
 }
 
 /*
