@@ -108,6 +108,10 @@ boot(void)
 		GROUP_VERSION, buildconfig, buildversion);
 	kprintf("\n");
 
+//Jaron added this 2-24-2014
+	sys_helloworld();
+
+
 	#if OPT_A0
 	hello();
 	#endif /* OPT_A0 */

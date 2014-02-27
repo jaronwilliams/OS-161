@@ -376,6 +376,18 @@ file      syscall/loadelf.c
 file      syscall/runprogram.c
 file      syscall/time_syscalls.c
 
+
+#**********************************************I CHANGED THIS***************************************
+#
+#Comment added by Jaron 2-24-14:
+#
+
+file      syscall/syscalltest.c
+
+
+#***********************************************END CHANGE*******************************************
+
+
 #
 # Startup and initialization
 #
@@ -446,9 +458,8 @@ file		test/fstest.c
 
 
 
-file		test/mytest.c
-file		test/mythreadtest.c
-file		test/mylocktest.c
+file		test/lab5test.c
+file		test/threadfun.c
 
 #***********************************************END CHANGE*******************************************
 

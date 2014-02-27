@@ -175,8 +175,8 @@ main()
 {
 	char *start, *end;
 	
-	printf("Welcome to the palindrome tester!\n");
-	printf("I will take a large palindrome and test it.\n");
+	printf("\n\nWelcome to the palindrome tester!\n");
+	printf("I will take a large palindrome and test it.\n\n");
 	printf("Here it is:\n");
 	printf("%s\n", palindrome);
 
@@ -193,6 +193,6 @@ main()
 		}
 	}
 	
-	printf("IS a palindrome\n");
+	printf("\n\nIS a palindrome\n");
 	return 0;
 }

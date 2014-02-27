@@ -109,8 +109,33 @@ syscall(struct trapframe *tf)
 				 (userptr_t)tf->tf_a1);
 		break;
 
-	    /* Add stuff here */
+//**********************************************I CHANGED THIS***************************************
+/*
+*Comment added by Jaron 2-24-14:
+*/
  
+
+case SYS__exit:
+		sys__exit(tf->tf_a0);
+		break;
+	case SYS_helloworld:
+		err = sys_helloworld();
+		break;
+	case SYS_printint:
+		err = sys_printint(tf->tf_a0);
+		break;
+	case SYS_printstring:
+		err = sys_printstring(tf->tf_a0, tf->tf_a1);
+		break;
+	case SYS_write:
+		err = sys_write(tf->tf_a0, tf->tf_a1, tf->tf_a2);
+		break;
+
+
+//***********************************************END CHANGE*******************************************
+
+
+
 	    default:
 		kprintf("Unknown syscall %d\n", callno);
 		err = ENOSYS;

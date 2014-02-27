@@ -72,46 +72,18 @@ void V(struct semaphore *);
  * The name field is for easier debugging. A copy of the name is
  * (should be) made internally.
  */
-
-
-////////////////////////////////////////
-//
-// Locks.
-
-
-
-//**********************************************I CHANGED THIS***************************************
-/*
-*Comment added by Jaron 2-3-14:
-*Edited 2-3-14
-*I added this for ASST1 / Project1
-*/
-
 struct lock {
+        char *lk_name;
+	struct spinlock lk;
+	struct wchan *lkchan;
+	volatile struct thread * lkthread;
 
-char *lk_name;
-
-//lk_thread is volatile! It is because changed by several threads with locking/ unlocking.
-
-
-		  volatile struct thread *lk_thread;
-		  volatile int lk_is_locked;
-		  struct wchan *lk_wchan;
-		  struct spinlock lk_spinlock;
-
-
+        // add what you need here
+        // (don't forget to mark things volatile as needed)
 };
-
-//***********************************************END CHANGE*******************************************
-
-
-
-
-
 
 struct lock *lock_create(const char *name);
 void lock_acquire(struct lock *);
-
 
 /*
  * Operations:

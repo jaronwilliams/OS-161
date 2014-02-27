@@ -197,6 +197,18 @@
 #define SYS_reboot       119
 //#define SYS___sysctl   120
 
+
+//**********************************************I CHANGED THIS***************************************
+/*
+*Comment added by Jaron 2-24-14:
+*/
+
+#define SYS_helloworld   121
+#define SYS_printint     122
+#define SYS_printstring  123
+
+//***********************************************END CHANGE*******************************************
+
 /*CALLEND*/
 
 

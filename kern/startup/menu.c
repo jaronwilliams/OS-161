@@ -390,7 +390,7 @@ cmd_kheapstats(int nargs, char **args)
 	(void)args;
 
 	kheap_printstats();
-	
+
 	return 0;
 }
 
@@ -406,7 +406,7 @@ showmenu(const char *name, const char *x[])
 
 	kprintf("\n");
 	kprintf("%s\n", name);
-	
+
 	for (i=ct=0; x[i]; i++) {
 		ct++;
 	}
@@ -478,9 +478,10 @@ static const char *testmenu[] = {
 	"[fs3] FS write stress       (4)     ",
 	"[fs4] FS write stress 2     (4)     ",
 	"[fs5] FS create stress      (4)     ",
-	"[mt]  My Test			  ",
-	"[mtt] My Thread Test		  ",
-	"[mlt] My Lock Test                  ",
+	"[l5t] Lab 5 Test	 ",
+	"[tft] Threadfun Test ",
+	"[utc] Unsafe Thread Counter Test ",
+	"[stc] Safe Thread Counter Test ",
 
 
 	NULL
@@ -591,9 +592,11 @@ static struct {
 	{ "km2",	mallocstress },
 
 //ADDED THIS:
-	{ "mt",	mytest },
-	{ "mtt",	mythreadtest },
-	{ "mlt",	mylocktest },
+	{ "l5t",	lab5test },
+	{ "tft",	threadfun },
+	{ "utc", unsafethreadcounter },
+	{ "stc", safethreadcounter },
+
 
 #if OPT_NET
 	{ "net",	nettest },

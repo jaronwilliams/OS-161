@@ -55,9 +55,12 @@ int catmouse(int, char **);
 *I added this for ASST1 / Project1
 */
 
-int mytest(int, char **);
-int mythreadtest(int, char **);
-int mylocktest(int, char **);
+int lab5test(int, char **);
+int threadfun(int, char **);
+int unsafethreadcounter(int, char **);
+int safethreadcounter(int, char **);
+
+
 
 
 //***********************************************END CHANGE*******************************************
