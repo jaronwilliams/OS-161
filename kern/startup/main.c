@@ -104,8 +104,8 @@ boot(void)
 	kprintf("%s", harvard_copyright);
 	kprintf("\n");
 
-	kprintf("Jaron Williams has edited the banner for Lab_2 %s (%s #%d)\n", 
-		GROUP_VERSION, buildconfig, buildversion);
+	//kprintf("Jaron Williams has edited the banner for Lab_2 %s (%s #%d)\n", GROUP_VERSION, buildconfig, buildversion);
+	kprintf("Jacky Nguyen and Jaron Williams (%s #%d)\n", buildconfig, buildversion);
 	kprintf("\n");
 
 //Jaron added this 2-24-2014

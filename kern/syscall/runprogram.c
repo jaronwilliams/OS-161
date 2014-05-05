@@ -45,6 +45,35 @@
 #include <syscall.h>
 #include <test.h>
 
+
+//////////////////////////Added this
+#include <copyinout.h>
+#include <thread.h>
+#include <synch.h>
+////////////////////////////////////
+
+
+static struct semaphore *first_sem = NULL;
+
+
+
+//////////////////////////Added this
+static void init_first_sem()
+{
+    if (first_sem == NULL)
+    {
+        first_sem = sem_create("firstsem", 0);
+        if (first_sem == NULL)
+        {
+            panic("Panic! Semaphore creation failed!\n");
+        }
+    }
+}
+
+
+
+
+
 /*
  * Load program "progname" and start running it in usermode.
  * Does not return except on error.
@@ -53,61 +82,157 @@
  */
 
 
-
+//argv = character pointer pointer, command line arguments
+//argc = total number of arguments between spaces.
 
 
 int
-runprogram(char *progname)
+runprogram(char ** args, unsigned long nargs)
 {
-	struct addrspace *as;
-	struct vnode *v;
-	vaddr_t entrypoint, stackptr;
-	int result;
 
-	/* Open the file. */
-	result = vfs_open(progname, O_RDONLY, 0, &v);
-	if (result) {
-		return result;
-	}
+//Allocating space
+    struct addrspace *as;
+    struct vnode *v;
+    vaddr_t entrypoint, stackptr, argv;
+    int result;
 
-	/* We should be a new process. */
-	KASSERT(curproc_getas() == NULL);
+//////////////////////////Added this
 
-	/* Create a new address space. */
-	as = as_create();
-	if (as ==NULL) {
-		vfs_close(v);
-		return ENOMEM;
-	}
+//Size of the stack
+    char kstack[1024];
+//Refers to virtual address in kernel's address space, kernel's command line arguments take in the number of arguments
+    vaddr_t kargv[nargs+1];
+    char progname[128];
 
-	/* Switch to it and activate it. */
-	curproc_setas(as);
-	as_activate();
+//unsigned integer of at least 16 bits, stackSize is of this type
+    size_t stackSize;
 
-	/* Load the executable. */
-	result = load_elf(v, &entrypoint);
-	if (result) {
-		/* p_addrspace will go away when curproc is destroyed */
-		vfs_close(v);
-		return result;
-	}
+    char * args2[nargs];
 
-	/* Done with the file now. */
-	vfs_close(v);
+    for (unsigned int i = 0; i < nargs; i++)
+    {
+       args2[i] = args[i];
+ }
 
-	/* Define the user stack in the address space */
-	result = as_define_stack(as, &stackptr);
-	if (result) {
-		/* p_addrspace will go away when curproc is destroyed */
-		return result;
-	}
+//Copies the program name into the the first index
+    strcpy(progname, args[0]);
 
-	/* Warp to user mode. */
-	enter_new_process(0 /*argc*/, NULL /*userspace addr of argv*/,
-			  stackptr, entrypoint);
-	
-	/* enter_new_process does not return. */
-	panic("enter_new_process returned\n");
-	return EINVAL;
+
+//////////////////////////////////////
+
+
+    /* Open the file. */
+
+
+//Predefined buffer, everything is stored from userland
+    result = vfs_open(progname, O_RDONLY, 0, &v);
+    if (result)
+    {
+        return result;
+    }
+
+    /* We should be a new process. */
+    KASSERT(curproc_getas() == NULL);
+    /* Create a new address space. */
+    as = as_create();
+    if (as ==NULL)
+    {
+        vfs_close(v);
+        return ENOMEM;
+    }
+
+    /* Switch to it and activate it. */
+    curproc_setas(as);
+    as_activate();
+
+    /* Load the executable. */
+    result = load_elf(v, &entrypoint);
+    if (result)
+    {
+        /* p_addrspace will go away when curproc is destroyed */
+        vfs_close(v);
+        return result;
+    }
+
+    /* Done with the file now. */
+    vfs_close(v);
+
+
+    /* Define the user stack in the address space */
+    result = as_define_stack(as, &stackptr);
+    if (result)
+    {
+        /* p_addrspace will go away when curproc is destroyed */
+        return result;
+    }
+
+
+//////////////////////////Added this
+    init_first_sem();
+    int padding = 0;
+    int paddingCount;
+    int length;
+
+//Only way to get padding/spacing information when used with the kstack(takes a bianry value) We can't use % and - signs which are important with getting padding info
+    stackSize = 0;
+    for (unsigned int i = 0; i < nargs; i++)
+    {
+  strcpy(kstack+stackSize,args2[i]);
+
+
+  length = strlen(kstack+stackSize)+1;
+
+
+        kargv[i] = length;
+        stackSize += length;
+
+        if(paddingCount = stackSize%4)
+        {
+           memcpy(kstack+stackSize, &padding, paddingCount=4-paddingCount);
+
+
+           stackSize += paddingCount;
+            kargv[i] += paddingCount;
+        }
+    }
+
+    kargv[nargs]=stackptr;
+    for (int i = nargs-1; i >= 0; i--)
+    {
+        kargv[i] = kargv[i+1] - kargv[i];
+    }
+ argv = stackptr - (stackSize + (nargs+1)*4);
+
+
+//Copies data from the virtual kernal-space address (src) into the user-sapce address (userdest).
+//Takes kaddr, uaddr, count
+   copyout(kstack, stackptr-stackSize, stackSize);
+
+//Both addresses of the userland and kernal have to match
+    copyout(kargv, argv, (nargs+1)*4);
+
+//////////////////////////////////////
+
+
+
+
+
+    /* Warp to user mode. */
+    //enter_new_process(0 /*argc*/, NULL /*userspace addr of argv*/,stackptr, entrypoint);
+
+
+//////////////////////////Added this
+
+    enter_new_process(nargs, argv, stackptr-stackSize, entrypoint);
+
+//////////////////////////////////////
+
+    /* enter_new_process does not return. */
+    panic("enter_new_process returned\n");
+
+    return EINVAL;
+
 }
+
+
 

@@ -6,7 +6,7 @@
 #include <synch.h>
 
 
-//declaring all the methods to use
+//Declaring all the methods to use.
 
 static int counter;
 
@@ -55,7 +55,8 @@ static void safeincrementcounter(void *data, unsigned long msg)
         counter++;
         lock_release(counter_lock);
     }
-    //This enables the test to run to competion
+
+//This enables the test to run to completion.
     V(first_sem);
 }
 
@@ -69,7 +70,8 @@ static void unsafeincrementcounter(void *data, unsigned long msg)
     {
         counter++;
     }
-//This enables the test to run to competion
+
+//This enables the test to run to completion.
     V(first_sem);
 }
 
@@ -96,6 +98,7 @@ int unsafethreadcounter(int nargs, char** args)
 
     k = atoi(args[1]), numincrements = atoi(args[2]);
     init_first_sem();
+    init_counter_lock();
 
     kprintf("\nBeginning Unsafe Thread Test...\n");
 
@@ -113,7 +116,7 @@ int unsafethreadcounter(int nargs, char** args)
     {
         threadNum++;
 
-//This helps numbers print in order
+//This helps numbers print in order.
         P(first_sem);
 
 
@@ -168,7 +171,7 @@ int safethreadcounter(int nargs, char** args)
     {
         threadNum++;
 
-//This helps numbers print in order
+//This helps numbers print in order.
         P(first_sem);
 
     }
@@ -187,7 +190,7 @@ static void printnum(void* data, unsigned long number)
 //%ld used for "long". "long" must be used as a compatible pointer type for thread_fork(...)
     kprintf("Thread number: %ld\n",number+1);
 
-//This enables the test to run to competion
+//This enables the test to run to completion.
     V(first_sem);
 }
 
@@ -226,9 +229,11 @@ int threadfun(int nargs, char** args)
         }
     }
 
-//This helps numbers print in order
+
     for (int i = 0; i < k; i++)
     {
+
+//This helps numbers print in order.
         P(first_sem);
 
     }

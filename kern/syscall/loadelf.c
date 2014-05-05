@@ -141,7 +141,7 @@ load_segment(struct addrspace *as, struct vnode *v,
 		}
 	}
 #endif
-	
+
 	return result;
 }
 

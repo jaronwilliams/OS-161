@@ -82,27 +82,41 @@ getinterval(time_t s1, uint32_t ns1, time_t s2, uint32_t ns2,
  * It copies the program name because runprogram destroys the copy
  * it gets by passing it to vfs_open(). 
  */
-static
-void
-cmd_progthread(void *ptr, unsigned long nargs)
+
+
+
+
+
+
+static void cmd_progthread(void *ptr, unsigned long nargs)
 {
 	char **args = ptr;
 	char progname[128];
 	int result;
-
 	KASSERT(nargs >= 1);
 
+/*
 	if (nargs > 2) {
 		kprintf("Warning: argument passing from menu not supported\n");
 	}
+*/
+
 
 	/* Hope we fit. */
 	KASSERT(strlen(args[0]) < sizeof(progname));
 
 	strcpy(progname, args[0]);
 
-	result = runprogram(progname);
-	if (result) {
+	//result = runprogram(progname);
+
+	
+//////////////////////////Added this
+
+	  result = runprogram(args, nargs);
+
+//////////////////////////////////////
+
+		if (result) {
 		kprintf("Running program %s failed: %s\n", args[0],
 			strerror(result));
 		return;
